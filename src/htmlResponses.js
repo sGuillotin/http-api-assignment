@@ -11,7 +11,7 @@ const serveFile = (request, response, content) => {
     response.end();
 };
 
-const getIndex = (request, reponse) => serveFile(request, response, index);
+const getIndex = (request, response) => serveFile(request, response, index);
 
 module.exports = {
     getIndex
