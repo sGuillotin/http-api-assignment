@@ -5,6 +5,76 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
+    //add stuff about buttons here?
+    //find content below, set message based on status code received from methods etc
+
+    // repurpose code from head request class example -- 
+
+
+
+    const handleResponse = async (response, parseResponse) => {
+      const content = document.querySelector('#content');
+      // TODO
+      // button from submit to send
+      // content finder
+      // userform update
+
+      switch(response.status) {
+        case 200: 
+          content.innerHTML = `<b>Success</b>`;
+          break;
+        case 201:
+          content.innerHTML = `<b>Created</b>`;
+          break;
+        case 400: 
+          content.innerHTML = `<b>Bad Request</b>`;
+          break;
+        case 404:
+          content.innerHTML = `<b>Resource Not Found</b>`;
+          break;
+        default: 
+          content.innerHTML = `Error code not implemented by client.`;
+          break;
+      }
+
+      if(parseResponse){
+        const object = await response.json();
+        content.innerHTML += `<p>${JSON.stringify(object)}</p>`;
+      }else{
+        content.innerHTML += `<p>Metadata Received. Content Not Received</p>`;
+      }
+    };
+
+    const requestUpdate = async (userForm) => {
+      const url = userForm.querySelector('#urlField').value;
+      const method = userForm.querySelector('#methodSelect').value;
+      
+      const response = await fetch(url, {
+        method,
+        headers:{
+          'Accept':'application/json'
+        }
+      });
+
+      handleResponse(response, method === 'get');
+    };
+
+
+    const init = () => {
+      const userForm = document.querySelector('#userForm');
+      
+      const getUsers = (e) => {
+        e.preventDefault();
+        requestUpdate(userForm);
+        return false;
+      }
+
+      userForm.addEventListener('submit', getUsers);
+    };
+
+    window.onload = init;
+
+
 
   </script>
 </head>
@@ -27,6 +97,7 @@
     <button id="send">Send</button>
   </section>
   <section id="content">
+
   </section>
 </body>
 </html>
