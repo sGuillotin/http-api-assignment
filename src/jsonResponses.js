@@ -25,6 +25,11 @@ const notFound = (request, response) => {
     return respondJSON(request, response, 404, responseJSON);
 };
 
+
+
+
+
+
 const badRequest = (request, response) => {
     console.log("bad request called");
 
@@ -45,7 +50,59 @@ const badRequest = (request, response) => {
 }
 
 
+const unauthorized = (request, response) => {
+    console.log("unauthorized called");
+
+    // "interrogate the url"
+    // if undefined or false
+    if(!request.query.valid || request.query.valid !== 'true'){
+        const responseJSON = {
+            message: "Login failed. Missing loggedIn query parameter set to yes",
+            id: "unauthorized",
+        }
+        return respondJSON(request, response, 401, responseJSON);
+    } else {
+        const responseJSON = {
+            message: "You have successfully viewed the content",
+        }
+        return respondJSON(request, response, 200, responseJSON);
+    }
+}
+
+
+
+/**
+ * falseObj {
+ * message: string to be displayed
+ * id: string id
+ * statusCode: int to be displayed
+ * }
+ * 
+ * ex:
+ *    message: 'Missing valid query parameter set to true.',
+ *    id: 'badRequest',
+ *    statusCode: 400
+ */
+const reply = (request, response, falseObj, trueObj) => {
+    // "interrogate the url"
+    // if undefined or false
+    if(!request.query.valid || request.query.valid !== 'true'){
+        const responseJSON = {
+            message: falseObj.message,
+            id: falseObj.id
+        }
+        return respondJSON(request, response, falseObj.statusCode, responseJSON);
+    } else {
+        const responseJSON = {
+            message: trueObj.message,
+        }
+        return respondJSON(request, response, trueObj.statusCode, responseJSON);
+    }
+}
+
+
 module.exports = {
     notFound,
-    badRequest
+    badRequest,
+    unauthorized
 };
