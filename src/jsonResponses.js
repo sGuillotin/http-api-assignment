@@ -29,7 +29,8 @@ const badRequest = (request, response) => {
     console.log("bad request called");
 
     // "interrogate the url"
-    if(request.query.valid === 'true'){
+    // if undefined or false
+    if(!request.query.valid || request.query.valid !== 'true'){
         const responseJSON = {
             message: 'Missing valid query parameter set to true.',
             id: 'badRequest',

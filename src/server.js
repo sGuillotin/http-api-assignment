@@ -35,7 +35,13 @@ http.createServer(onRequest).listen(port, () => {
 // Currently using https://github.com/AustinWilloughby/Accept-Header-Status-Code-Spring-2026/blob/master/src/server.js
 
 
-// XML - announcement on mycourses
+
+// 1. Server side before client side
+// 2. XML later
+
+
+
+// XML - announcement on mycourses (below)
 /*
 const getCats = (request, response) => {
   const cat = { name: 'Rhyleigh', age: 20 };
