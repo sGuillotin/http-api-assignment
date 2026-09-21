@@ -20,6 +20,9 @@
       // userform update
       // how connect to server???
 
+      // Actual TODO
+      // refactor requestupdate to handle this stuff
+
       switch(response.status) {
         case 200: 
           content.innerHTML = `<b>Success</b>`;
@@ -47,8 +50,8 @@
     };
 
     const requestUpdate = async (userForm) => {
-      const url = userForm.querySelector('#urlField').value;
-      const method = userForm.querySelector('#methodSelect').value;
+      const page = userForm.querySelector('#page').value;
+      const type = userForm.querySelector('#type').value;
       
       const response = await fetch(url, {
         method,
@@ -62,15 +65,16 @@
 
 
     const init = () => {
-      const userForm = document.querySelector('#userForm');
+      const userForm = document.querySelector('#top');
       
-      const getUsers = (e) => {
+      // call to check results of form and prevent default (dont reload page)
+      const updateUserForm = (e) => {
         e.preventDefault();
         requestUpdate(userForm);
         return false;
       }
 
-      userForm.addEventListener('submit', getUsers);
+      userForm.addEventListener('#send', updateUserForm);
     };
 
     window.onload = init;

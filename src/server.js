@@ -21,7 +21,7 @@ const onRequest = (request, response) => {
   const parsedUrl = new URL(request.url, `${protocol}://${request.headers.host}`);
   // If there is an Accept header, split it into an array. If there is not, use an empty array so the next step does not crash.
   request.acceptedTypes = request.headers.accept ? request.headers.accept.split(',') : [];
-  console.log(request.acceptedTypes);
+  console.log("request.acceptedTypes", request.acceptedTypes);
 
   request.query = Object.fromEntries(parsedUrl.searchParams);
   // console.log(parsedUrl.searchParams);
