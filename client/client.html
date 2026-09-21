@@ -5,23 +5,13 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
   
   <script>
-    //add stuff about buttons here?
-    //find content below, set message based on status code received from methods etc
 
-    // repurpose code from head request class example -- 
-
-
+    // TODO
+    // - add status codes below
+    // - connect message objects to populate here
 
     const handleResponse = async (response, parseResponse) => {
       const content = document.querySelector('#content');
-      // TODO
-      // button from submit to send
-      // content finder
-      // userform update
-      // how connect to server???
-
-      // Actual TODO
-      // refactor requestupdate to handle this stuff
 
       switch(response.status) {
         case 200: 
@@ -52,20 +42,25 @@
     const requestUpdate = async (userForm) => {
       const page = userForm.querySelector('#page').value;
       const type = userForm.querySelector('#type').value;
+
+      console.log("page", page);
+      console.log("type", type);
       
-      const response = await fetch(url, {
-        method,
-        headers:{
-          'Accept':'application/json'
+      const response = await fetch(page, {
+        method: 'GET',
+        headers: {
+          'Accept': type
         }
       });
 
-      handleResponse(response, method === 'get');
+      // handleResponse(response, method === 'get');
+      handleResponse(response);
     };
 
 
     const init = () => {
       const userForm = document.querySelector('#top');
+      const button = document.querySelector('#send');
       
       // call to check results of form and prevent default (dont reload page)
       const updateUserForm = (e) => {
@@ -74,7 +69,7 @@
         return false;
       }
 
-      userForm.addEventListener('#send', updateUserForm);
+      button.addEventListener('click', updateUserForm);
     };
 
     window.onload = init;
