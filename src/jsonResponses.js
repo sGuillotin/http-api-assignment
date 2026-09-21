@@ -22,7 +22,7 @@ const respondJSON = (request, response, status, object) => {
  * Parameterize to save like 4 words
  * responseObj --> creates overloading effect (id only prints when provided)
  */
-const reply = (request, response, responseObj, statusCode) => {
+const replyJSONSimpler = (request, response, responseObj, statusCode) => {
     const responseJSON = {
         message: responseObj.message,
         id: responseObj.id,
@@ -33,11 +33,11 @@ const reply = (request, response, responseObj, statusCode) => {
 
 
 
-const success = (request, response) => reply(request, response, { message: 'Success! You have succeeded.'}, 200);
-const notFound = (request, response) => reply(request, response, { message: 'The page you are looking for was not found.', id:'notFound' }, 404);
-const forbidden = (request, response) => reply(request, response, { message: 'You do not have access to this content.', id:'forbidden' }, 403);
-const internal = (request, response) => reply(request, response, { message: 'Internal Server Error. Server kaboom.', id:'internalError' }, 500);
-const notImplemented = (request, response) => reply(request, response, { message: 'A get request for this page has not been implemented yet. Check back again soon.', id:'notImplemented' }, 501);
+const success = (request, response) => replyJSONSimpler(request, response, { message: 'Success! You have succeeded.'}, 200);
+const notFound = (request, response) => replyJSONSimpler(request, response, { message: 'The page you are looking for was not found.', id:'notFound' }, 404);
+const forbidden = (request, response) => replyJSONSimpler(request, response, { message: 'You do not have access to this content.', id:'forbidden' }, 403);
+const internal = (request, response) => replyJSONSimpler(request, response, { message: 'Internal Server Error. Server kaboom.', id:'internalError' }, 500);
+const notImplemented = (request, response) => replyJSONSimpler(request, response, { message: 'A get request for this page has not been implemented yet. Check back again soon.', id:'notImplemented' }, 501);
 
 
 
@@ -47,9 +47,9 @@ const badRequest = (request, response) => {
     // "interrogate the url"
     // if undefined or false
     if(!request.query.valid || request.query.valid !== 'true'){
-        reply(request, response, { message: 'Missing valid query parameter set to true.', id: 'badRequest'}, 400);
+        replyJSONSimpler(request, response, { message: 'Missing valid query parameter set to true.', id: 'badRequest'}, 400);
     } else {
-        reply(request, response, { message: 'This request has the valid parameters.'}, 200);
+        replyJSONSimpler(request, response, { message: 'This request has the valid parameters.'}, 200);
     }
 }
 
@@ -60,9 +60,9 @@ const unauthorized = (request, response) => {
     // "interrogate the url"
     // if undefined or false
     if(!request.query.loggedIn || request.query.loggedIn !== 'yes'){
-        reply(request, response, { message: 'Login failed. Missing loggedIn query parameter set to yes.', id: 'unauthorized'}, 401);
+        replyJSONSimpler(request, response, { message: 'Login failed. Missing loggedIn query parameter set to yes.', id: 'unauthorized'}, 401);
     } else {
-        reply(request, response, { message: 'You have successfully viewed the content'}, 200);
+        replyJSONSimpler(request, response, { message: 'You have successfully viewed the content'}, 200);
     }
 }
 

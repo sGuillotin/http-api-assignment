@@ -19,6 +19,9 @@ const urlStruct = {
 const onRequest = (request, response) => {
   const protocol = request.connection.encrypted ? 'https' : 'http';
   const parsedUrl = new URL(request.url, `${protocol}://${request.headers.host}`);
+  // If there is an Accept header, split it into an array. If there is not, use an empty array so the next step does not crash.
+  request.acceptedTypes = request.headers.accept ? request.headers.accept.split(',') : [];
+  console.log(request.acceptedTypes);
 
   request.query = Object.fromEntries(parsedUrl.searchParams);
   // console.log(parsedUrl.searchParams);
@@ -36,14 +39,13 @@ http.createServer(onRequest).listen(port, () => {
 })
 
 
-// used at one point https://github.com/AustinWilloughby/Accept-Header-Status-Code-Spring-2026/blob/master/src/server.js
 
 
 
 // TODO
-// test forbidden
-// - internal
-// - notImplemented
+// - Processing XML server side
+// - displaying something client side
+
 
 
 
@@ -81,3 +83,6 @@ const getCats = (request, response) => {
   return respond(request, response, JSON.stringify(cat), 'application/json');
 };
 */
+
+// see also here for more complex version  https://github.com/AustinWilloughby/Accept-Header-Status-Code-Spring-2026/blob/master/src/server.js
+// also good https://github.com/IGM-RichMedia-at-RIT/status-code-example-done/blob/master/src/jsonResponses.js#L39
