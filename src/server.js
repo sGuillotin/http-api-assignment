@@ -10,8 +10,9 @@ const urlStruct = {
   '/success': jsonHandler.success,
   '/badRequest': jsonHandler.badRequest,
   '/unauthorized': jsonHandler.unauthorized,
-  // '/forbidden': jsonHandler.forbidden,
-  // '/internal': jsonHandler.internal,
+  '/forbidden': jsonHandler.forbidden,
+  '/internal': jsonHandler.internal,
+  '/notImplemented': jsonHandler.notImplemented,
   notFound: jsonHandler.notFound,
 }
 
@@ -36,6 +37,13 @@ http.createServer(onRequest).listen(port, () => {
 
 
 // used at one point https://github.com/AustinWilloughby/Accept-Header-Status-Code-Spring-2026/blob/master/src/server.js
+
+
+
+// TODO
+// test forbidden
+// - internal
+// - notImplemented
 
 
 

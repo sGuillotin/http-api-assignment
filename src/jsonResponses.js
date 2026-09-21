@@ -34,11 +34,10 @@ const reply = (request, response, responseObj, statusCode) => {
 
 
 const success = (request, response) => reply(request, response, { message: 'Success! You have succeeded.'}, 200);
-
 const notFound = (request, response) => reply(request, response, { message: 'The page you are looking for was not found.', id:'notFound' }, 404);
-
-
-
+const forbidden = (request, response) => reply(request, response, { message: 'You do not have access to this content.', id:'forbidden' }, 403);
+const internal = (request, response) => reply(request, response, { message: 'Internal Server Error. Server kaboom.', id:'internalError' }, 500);
+const notImplemented = (request, response) => reply(request, response, { message: 'A get request for this page has not been implemented yet. Check back again soon.', id:'notImplemented' }, 501);
 
 
 
@@ -72,5 +71,8 @@ module.exports = {
     success,
     notFound,
     badRequest,
-    unauthorized
+    unauthorized,
+    forbidden,
+    internal,
+    notImplemented
 };
