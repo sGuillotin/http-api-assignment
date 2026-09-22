@@ -6,11 +6,6 @@
   <link rel="stylesheet" type="text/css" href="/style.css">
 
   <script>
-
-    // TODO
-    // - add status codes below
-    // - connect message objects to populate here
-
     const handleResponse = async (response, parseResponse) => {
       const content = document.querySelector('#content');
 
@@ -43,18 +38,25 @@
 
       // if we're told to parse the response
       if (parseResponse) {
+        // read the raw text stream - can only do this once
+        const text = await response.text();
+        // print the raw text before parsing it
+        console.log(text);
+
         // check content type
         const contentType = response.headers.get('content-type');
 
         if (contentType && contentType.includes('xml')) { //if exists and xml
-          const text = await response.text();
+          // parse into xml
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(text, 'text/xml');
           const message = xmlDoc.querySelector('message')?.textContent;
           content.innerHTML += `<p>${message}</p>`;
         } else { //otherwise handle JSON
-          const object = await response.json();
-          content.innerHTML += `<p>${JSON.stringify(object.message).replace(/^"|"$/g, '')}</p>`;
+          // parse into JS object
+          const object = JSON.parse(text);
+          // const object = await response.json();
+          content.innerHTML += `<p>${object.message}</p>`;
         }
       } else {
         content.innerHTML += `<p>Metadata Received. Content Not Received</p>`;
@@ -95,8 +97,6 @@
     };
 
     window.onload = init;
-
-
 
   </script>
 </head>

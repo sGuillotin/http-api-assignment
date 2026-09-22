@@ -43,8 +43,8 @@ http.createServer(onRequest).listen(port, () => {
 
 
 // TODO
-// - Processing XML server side
-// - displaying something client side
+// - test all raw direct xmls
+// - print raw responses
 
 
 
@@ -86,3 +86,12 @@ const getCats = (request, response) => {
 
 // see also here for more complex version  https://github.com/AustinWilloughby/Accept-Header-Status-Code-Spring-2026/blob/master/src/server.js
 // also good https://github.com/IGM-RichMedia-at-RIT/status-code-example-done/blob/master/src/jsonResponses.js#L39
+
+// SOURCES
+// https://github.com/IGM-RichMedia-at-RIT/status-code-example-done/blob/master/client/client.html
+// https://github.com/AustinWilloughby/Accept-Header-Status-Code-Spring-2026/blob/master/src/responses.js
+// https://github.com/IGM-RichMedia-at-RIT/http-api-assignment/blob/master/client/client.html
+// https://github.com/IGM-RichMedia-at-RIT/head-request-example-done/blob/master/src/jsonResponses.js
+// (my stuff)
+// https://github.com/sGuillotin/head-request-class-example/blob/master/client/client.html
+// https://github.com/sGuillotin/streaming-media-assignment/blob/master/src/server.js 
