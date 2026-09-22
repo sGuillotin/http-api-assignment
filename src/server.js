@@ -1,33 +1,33 @@
 const http = require('http');
 const htmlHandler = require('./htmlResponses.js');
-const jsonHandler = require('./jsonResponses.js');
+const replyHandler = require('./responses.js');
 
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
 const urlStruct = {
   '/': htmlHandler.getIndex,
   '/style.css': htmlHandler.getCSS,
-  '/success': jsonHandler.success,
-  '/badRequest': jsonHandler.badRequest,
-  '/unauthorized': jsonHandler.unauthorized,
-  '/forbidden': jsonHandler.forbidden,
-  '/internal': jsonHandler.internal,
-  '/notImplemented': jsonHandler.notImplemented,
-  notFound: jsonHandler.notFound,
+  '/success': replyHandler.success,
+  '/badRequest': replyHandler.badRequest,
+  '/unauthorized': replyHandler.unauthorized,
+  '/forbidden': replyHandler.forbidden,
+  '/internal': replyHandler.internal,
+  '/notImplemented': replyHandler.notImplemented,
+  notFound: replyHandler.notFound,
 }
 
 const onRequest = (request, response) => {
   const protocol = request.connection.encrypted ? 'https' : 'http';
   const parsedUrl = new URL(request.url, `${protocol}://${request.headers.host}`);
-  // If there is an Accept header, split it into an array. If there is not, use an empty array so the next step does not crash.
-  request.acceptedTypes = request.headers.accept ? request.headers.accept.split(',') : [];
+  // If there is an Accept header, split it into an array. If there is not, use JSON
+  request.acceptedTypes = request.headers.accept ? request.headers.accept.split(',') : ['application/json'];
   // console.log("request.acceptedTypes", request.acceptedTypes);
 
   request.query = Object.fromEntries(parsedUrl.searchParams);
   // console.log(parsedUrl.searchParams);
   // console.log(request.query);
 
-  if(urlStruct[parsedUrl.pathname]){
+  if (urlStruct[parsedUrl.pathname]) {
     urlStruct[parsedUrl.pathname](request, response);
   } else {
     urlStruct.notFound(request, response);
@@ -35,7 +35,7 @@ const onRequest = (request, response) => {
 };
 
 http.createServer(onRequest).listen(port, () => {
-    console.log(`Listening on 127.0.0.1:${port}`);
+  console.log(`Listening on 127.0.0.1:${port}`);
 })
 
 
@@ -59,7 +59,7 @@ http.createServer(onRequest).listen(port, () => {
  * /internal
  * /notimplemented
  * any other url
- * 
+ *
  * accept header from client to server - default to JSON
  * XML
  * button, form, and fetch

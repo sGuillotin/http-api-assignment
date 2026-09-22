@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-  
+
   <script>
 
     // TODO
@@ -13,28 +14,49 @@
     const handleResponse = async (response, parseResponse) => {
       const content = document.querySelector('#content');
 
-      switch(response.status) {
-        case 200: 
+      switch (response.status) {
+        case 200:
           content.innerHTML = `<b>Success</b>`;
           break;
-        case 201:
-          content.innerHTML = `<b>Created</b>`;
-          break;
-        case 400: 
+        case 400:
           content.innerHTML = `<b>Bad Request</b>`;
+          break;
+        case 401:
+          content.innerHTML = `<b>Unauthorized</b>`;
+          break;
+        case 403:
+          content.innerHTML = `<b>Forbidden</b>`;
           break;
         case 404:
           content.innerHTML = `<b>Resource Not Found</b>`;
           break;
-        default: 
+        case 500:
+          content.innerHTML = `<b>Internal Server Error</b>`;
+          break;
+        case 501:
+          content.innerHTML = `<b>Not Implemented</b>`;
+          break;
+        default:
           content.innerHTML = `Error code not implemented by client.`;
           break;
       }
 
-      if(parseResponse){
-        const object = await response.json();
-        content.innerHTML += `<p>${JSON.stringify(object)}</p>`;
-      }else{
+      // if we're told to parse the response
+      if (parseResponse) {
+        // check content type
+        const contentType = response.headers.get('content-type');
+
+        if (contentType && contentType.includes('xml')) { //if exists and xml
+          const text = await response.text();
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(text, 'text/xml');
+          const message = xmlDoc.querySelector('message')?.textContent;
+          content.innerHTML += `<p>${message}</p>`;
+        } else { //otherwise handle JSON
+          const object = await response.json();
+          content.innerHTML += `<p>${JSON.stringify(object.message).replace(/^"|"$/g, '')}</p>`;
+        }
+      } else {
         content.innerHTML += `<p>Metadata Received. Content Not Received</p>`;
       }
     };
@@ -45,7 +67,7 @@
 
       console.log("page", page);
       console.log("type", type);
-      
+
       const response = await fetch(page, {
         method: 'GET',
         headers: {
@@ -53,15 +75,15 @@
         }
       });
 
-      // handleResponse(response, method === 'get');
-      handleResponse(response);
+      handleResponse(response, true);
+      // pass the parseResponse a 'true' so we send the message metadata
     };
 
 
     const init = () => {
       const userForm = document.querySelector('#top');
       const button = document.querySelector('#send');
-      
+
       // call to check results of form and prevent default (dont reload page)
       const updateUserForm = (e) => {
         e.preventDefault();
@@ -78,6 +100,7 @@
 
   </script>
 </head>
+
 <body>
   <section id="top">
     <h3>Status Code Tests</h3>
@@ -100,4 +123,5 @@
 
   </section>
 </body>
+
 </html>
