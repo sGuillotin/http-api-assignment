@@ -51,7 +51,7 @@ const badRequest = (request, response) => {
     if (!request.query.valid || request.query.valid !== 'true') {
         respondAny(request, response, 400, { message: 'Missing valid query parameter set to true.', id: 'badRequest' });
     } else {
-        respondAny(request, response, 200, { message: 'This request has the valid parameters.' });
+        respondAny(request, response, 200, { message: 'This request has the required parameters.' });
     }
 }
 
